@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class NewsService implements NewsAPI {
@@ -19,28 +20,31 @@ public class NewsService implements NewsAPI {
     private NewsMapper mapper;
 
     @Override
-    public NewsDTO insert(NewsDTO dto) {
-        var entity = repository.save(mapper.toEntity(dto));
+    public NewsDTO insert(NewsDTO news) {
+        var entity = repository.save(mapper.toEntity(news));
         return mapper.toDTO(entity);
     }
 
     @Override
     public NewsDTO update(NewsDTO news) {
-        return null;
+        var entity = mapper.toEntity(news);
+        var result = repository.save(entity);
+        return mapper.toDTO(result);
     }
 
     @Override
-    public boolean delete(int newsId) {
-        return false;
+    public void delete(long newsId) {
+        repository.deleteById(newsId);
     }
 
     @Override
-    public NewsDTO get(int newsId) {
-        return null;
+    public Optional<NewsDTO> get(long newsId) {
+        var entity = repository.findById(newsId);
+        return Optional.ofNullable(mapper.toDTO(entity.orElse(null)));
     }
 
     @Override
-    public List<NewsDTO> get(Predicate<NewsDTO> criteria) {
-        return null;
+    public List<NewsDTO> getAll() {
+        return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 }

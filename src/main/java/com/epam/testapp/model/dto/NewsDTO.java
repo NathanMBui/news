@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @Builder
 public class NewsDTO {
-    int id;
+    Long id;
     String title;
     String brief;
     String content;

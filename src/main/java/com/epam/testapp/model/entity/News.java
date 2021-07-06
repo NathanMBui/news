@@ -1,11 +1,9 @@
 package com.epam.testapp.model.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -14,10 +12,12 @@ import java.util.Date;
 @Table(name = "News")
 @Setter
 @Getter
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class News {
     @Id
-    int id;
+    @GeneratedValue
+    Long id;
     String title;
     String brief;
     String content;
